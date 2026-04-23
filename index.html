@@ -48,6 +48,28 @@ nav{position:sticky;top:0;z-index:500;background:rgba(12,14,20,.92);backdrop-fil
 .nav-tab{flex-shrink:0;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;color:var(--text3);text-decoration:none;transition:all .15s;white-space:nowrap;letter-spacing:.01em;cursor:pointer;border:none;background:none;}
 .nav-tab:hover,.nav-tab.active{color:var(--accent);background:rgba(74,222,128,.1);}
 .nav-cta{flex-shrink:0;height:32px;padding:0 16px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0E14;font-size:12px;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  height: 28px;
+  width: auto;
+}
+
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 5% 60px;position:relative;overflow:hidden;}
@@ -176,6 +198,75 @@ nav{position:sticky;top:0;z-index:500;background:rgba(12,14,20,.92);backdrop-fil
 .tc-quote{font-size:12px;color:var(--text2);line-height:1.65;font-weight:300;font-style:italic;}
 .tc-date{font-size:10px;color:var(--text3);margin-top:10px;display:flex;align-items:center;justify-content:space-between;}
 .verified{font-size:10px;font-weight:700;color:var(--accent);}
+/* ── TARGET AUDIENCE (CUSTOM CARD) ── */
+.audience-card{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:20px;
+  transition:all .25s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.audience-card:hover{
+  transform:translateY(-5px);
+  border-color:var(--border2);
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ICON */
+.audience-icon{
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  background:rgba(74,222,128,.12);
+  color:var(--accent);
+  flex-shrink:0;
+}
+
+/* TEXT AREA */
+.audience-info h4{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+.audience-info p{
+  font-size:13px;
+  color:var(--text2);
+  line-height:1.6;
+  font-weight:300;
+  margin-bottom:12px;
+}
+
+/* TESTIMONIAL */
+.testimonial-block{
+  font-size:12px;
+  color:var(--text2);
+  font-style:italic;
+  line-height:1.6;
+  background:rgba(255,255,255,0.02);
+  border-left:3px solid var(--accent);
+  padding:10px 12px;
+  border-radius:8px;
+}
+
+.testimonial-name{
+  margin-top:8px;
+  font-size:11px;
+  font-weight:600;
+  color:var(--text3);
+  font-style:normal;
+}
 
 /* ── E. FEATURES ── */
 #features .feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
@@ -320,10 +411,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5%;d
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-icon">🏪</div>
-    <div class="nav-logo-text">Aulia<span>Soft</span></div>
-  </a>
+  <a href="#" class="nav-logo">
+      <img src="https://www.auliasoft.com/assets/images/logo/logo.png" alt="AuliaSoft" onerror="this.style.display='none'">
+    </a>
   <div class="nav-tabs" id="navTabs">
     <a class="nav-tab" href="#pricing" onclick="setActive(this)">A. Pricing</a>
     <a class="nav-tab" href="#brand" onclick="setActive(this)">B. Brand</a>
@@ -614,24 +704,56 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5%;d
   <p class="sec-sub reveal">AuliaSoft E-POS dirancang khusus untuk pelaku UMKM retail dan jasa di Indonesia yang ingin beralih dari pencatatan manual ke sistem digital.</p>
 
   <div class="aud-grid reveal">
-    <div class="aud-card">
-      <div class="aud-img" style="background:rgba(74,222,128,.1);">🏪</div>
-      <div class="aud-title">Pemilik Toko Retail</div>
-      <div class="aud-desc">Pemilik toko kelontong, minimarket, toko fashion, toko alat tulis, apotek, toko material yang ingin digitalisasi kasir dan stok barang.</div>
-      <div class="aud-tags"><span class="aud-tag">Kasir Digital</span><span class="aud-tag">Stok Otomatis</span><span class="aud-tag">Laporan Harian</span></div>
+    <div class="audience-card">
+    <div class="audience-icon">🏪</div>
+    <div class="audience-info">
+      <h4>Pemilik Toko & Minimarket</h4>
+      <p>Pemilik warung, toko kelontong, minimarket, dan toko retail modern yang ingin mencatat transaksi, stok, dan laporan keuangan secara otomatis dan efisien.</p>
+      <div class="testimonial-block">
+        "Sangat membantu kami dalam melakukan transaksi penjualan, dan sangat membantu kami dalam melakukan pembukuan akhir bulan. Respon Tim Support nya sangat Cepat Tanggap (sat-set-sat-set = done)."
+        <div class="testimonial-name">— ABDULLAH PARFUM, Martapura & Banjarbaru, Kalimantan Selatan</div>
+      </div>
     </div>
-    <div class="aud-card">
-      <div class="aud-img" style="background:rgba(34,211,238,.1);">🍜</div>
-      <div class="aud-title">Pelaku Usaha F&B</div>
-      <div class="aud-desc">Pemilik warung makan, cafe, kedai kopi, dan restoran kecil yang butuh fitur atur meja, QR e-menu, dan order online terintegrasi.</div>
-      <div class="aud-tags"><span class="aud-tag" style="background:rgba(34,211,238,.1);color:var(--accent2);">Atur Meja</span><span class="aud-tag" style="background:rgba(34,211,238,.1);color:var(--accent2);">Order Online</span></div>
+  </div>
+
+  <div class="audience-card">
+    <div class="audience-icon">🤝</div>
+    <div class="audience-info">
+      <h4>Pengurus Koperasi & Lembaga Keuangan</h4>
+      <p>Pengurus KSP, KSPPS BMT, BUMDES, dan lembaga keuangan mikro yang membutuhkan sistem akuntansi dan laporan keuangan yang tertata rapi dan akurat.</p>
+      <div class="testimonial-block">
+        "Kami benar-benar sangat terbantu dengan aplikasi AuliaSoft ini dimana mulai menggunakannya sejak tahun 2013, laporan koperasi jd tertata rapi. Pelayanan remote dari tim ahli di bidangnya pun juga fast respon dan sangat baik."
+        <div class="testimonial-name">— Koperasi Insan Berkah Mandiri, Tangerang Banten</div>
+      </div>
     </div>
-    <div class="aud-card">
-      <div class="aud-img" style="background:rgba(245,158,11,.1);">🔧</div>
-      <div class="aud-title">Usaha Jasa & Servis</div>
-      <div class="aud-desc">Bengkel motor/mobil, salon kecantikan, laundry, dan toko HP yang perlu pencatatan order servis, estimasi biaya, dan notifikasi pelanggan.</div>
-      <div class="aud-tags"><span class="aud-tag" style="background:rgba(245,158,11,.1);color:var(--gold);">Modul Servis</span><span class="aud-tag" style="background:rgba(245,158,11,.1);color:var(--gold);">Notif WA</span></div>
+  </div>
+
+  <div class="audience-card">
+    <div class="audience-icon">🍽️</div>
+    <div class="audience-info">
+      <h4>Pengusaha Kuliner & Restoran</h4>
+      <p>Pemilik warung makan, restoran, dan bisnis kuliner yang membutuhkan manajemen meja, order online, integrasi delivery, dan laporan penjualan real-time.</p>
+      <div class="testimonial-block">
+        "Selama penggunaan aplikasi auliasoft pos jika ada masalah, satu kendala tim support auliasoft pos dengan cepat membantu, kadang di luar jam kerjanya saja masih mau membantu 😊 Dengan aplikasi auliasoft pos kami tau rugi laba penjualan dalam satu hari, satu bulan dan satu tahun."
+        <div class="testimonial-name">— Pengguna dari Barabai, Komp. SIT Al Khair Mandiri, HST</div>
+      </div>
     </div>
+  </div>
+
+  <div class="audience-card">
+    <div class="audience-icon">📊</div>
+    <div class="audience-info">
+      <h4>Manajer & Staf Akuntansi UMKM</h4>
+      <p>Staf kasir dan akunting yang membutuhkan software mudah dipelajari untuk mencatat transaksi harian, membuat laporan bulanan, dan laporan RAT tahunan.</p>
+      <div class="testimonial-block">
+        "Lebih efisien dan mempermudah kasir membuat laporan keuangan. Pengalaman menggunakan aplikasi auliasoft dari tahun 2020."
+        <div class="testimonial-name">— Pengguna dari Sidareja, Cilacap, Jawa Tengah</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+   
   </div>
 
   <div style="margin-top:8px;" class="reveal">
@@ -1370,7 +1492,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5%;d
 </div>
 
 <footer>
-  <div class="footer-copy">© 2026 AuliaSoft — PT Mitra Aulia Indonesia · www.auliasoft.com · WA: 081241945881 · NIM: 310123012769</div>
+  <div class="footer-copy">© 2026 AuliaSoft — PT Mitra Aulia Indonesia · www.auliasoft.com · WA: 083131661200 · NIM: 310123023749</div>
   <div style="font-size:11px;color:var(--text3);">Product Knowledge Explorer — 12 Dimensi E-POS</div>
 </footer>
 
