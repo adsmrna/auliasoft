@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuliaSoft E-POS — Product Knowledge Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0C0E14;
+  --bg2:#12151E;
+  --bg3:#1A1E2A;
+  --panel:#1E2230;
+  --border:rgba(255,255,255,.07);
+  --border2:rgba(255,255,255,.12);
+  --text:#F0F2F8;
+  --text2:#9BA3BA;
+  --text3:#6B7491;
+  --accent:#4ADE80;
+  --accent2:#22D3EE;
+  --accent3:#F59E0B;
+  --accent4:#F472B6;
+  --accent5:#A78BFA;
+  --red:#F87171;
+  --blue:#60A5FA;
+  --orange:#FB923C;
+  --green:#4ADE80;
+  --gold:#F59E0B;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --r:10px;
+  --r2:16px;
+  --r3:24px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:500;background:rgba(12,14,20,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 4%;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#4ADE80,#22D3EE);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.nav-logo-text{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
+.nav-logo-text span{color:var(--accent);}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex-shrink:0;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;color:var(--text3);text-decoration:none;transition:all .15s;white-space:nowrap;letter-spacing:.01em;cursor:pointer;border:none;background:none;}
+.nav-tab:hover,.nav-tab.active{color:var(--accent);background:rgba(74,222,128,.1);}
+.nav-cta{flex-shrink:0;height:32px;padding:0 16px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0E14;font-size:12px;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 5% 60px;position:relative;overflow:hidden;}
+.hero-mesh{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 50% 20%,rgba(74,222,128,.12) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 40% at 80% 70%,rgba(34,211,238,.08) 0%,transparent 60%),
+  radial-gradient(ellipse 30% 30% at 10% 80%,rgba(167,139,250,.08) 0%,transparent 60%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--accent);border-radius:99px;padding:6px 18px;font-size:12px;font-weight:600;margin-bottom:28px;position:relative;z-index:1;animation:fadeUp .5s ease both;}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(44px,8vw,96px);font-weight:900;line-height:.95;letter-spacing:-3px;max-width:900px;margin:0 auto 20px;position:relative;z-index:1;animation:fadeUp .5s .08s ease both;}
+.hero-title .hl-green{background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-title .hl-gold{background:linear-gradient(135deg,#F59E0B,#F472B6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:clamp(14px,2vw,17px);color:var(--text2);max-width:580px;margin:0 auto 40px;line-height:1.8;font-weight:300;position:relative;z-index:1;animation:fadeUp .5s .16s ease both;}
+.hero-pk-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:800px;margin:0 auto;position:relative;z-index:1;animation:fadeUp .5s .24s ease both;}
+.pk-chip{padding:10px 8px;border-radius:var(--r);background:var(--panel);border:1px solid var(--border);text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block;}
+.pk-chip:hover{border-color:var(--accent);background:rgba(74,222,128,.08);transform:translateY(-3px);}
+.pk-chip .pk-num{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-family:var(--font-mono);}
+.pk-chip .pk-icon{font-size:20px;display:block;margin-bottom:4px;}
+.pk-chip .pk-label{font-size:9px;font-weight:600;color:var(--text2);line-height:1.3;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* SECTIONS */
+.section{padding:80px 5%;max-width:1200px;margin:0 auto;}
+.section-wrap{border-top:1px solid var(--border);}
+.sec-label{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sec-label-num{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--text3);background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:3px 9px;letter-spacing:.06em;}
+.sec-label-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;}
+.sec-title{font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-bottom:12px;}
+.sec-sub{font-size:15px;color:var(--text2);max-width:560px;line-height:1.75;font-weight:300;margin-bottom:48px;}
+
+/* ── A. PRICING ── */
+#pricing .pricing-top{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;margin-bottom:48px;}
+.promo-card{background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(34,211,238,.1));border:1px solid rgba(74,222,128,.3);border-radius:var(--r3);padding:32px 36px;text-align:center;min-width:220px;}
+.promo-card .promo-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:8px;}
+.promo-card .promo-price{font-family:var(--font-display);font-size:56px;font-weight:900;color:var(--accent);letter-spacing:-3px;line-height:1;}
+.promo-card .promo-period{font-size:13px;color:var(--text2);margin-top:4px;}
+.promo-card .promo-name{font-size:14px;font-weight:700;color:var(--text);margin-top:12px;padding-top:12px;border-top:1px solid rgba(74,222,128,.2);}
+.promo-desc{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;padding-top:8px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.price-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:28px;position:relative;transition:all .2s;}
+.price-card:hover{transform:translateY(-4px);border-color:var(--border2);}
+.price-card.featured{border-color:rgba(74,222,128,.35);background:linear-gradient(160deg,rgba(74,222,128,.06),var(--panel));}
+.price-card.premium-card{border-color:rgba(245,158,11,.25);background:linear-gradient(160deg,rgba(245,158,11,.05),var(--panel));}
+.popular-pill{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0E14;font-size:10px;font-weight:800;padding:4px 16px;border-radius:99px;white-space:nowrap;}
+.pc-tier{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.pc-price{font-family:var(--font-display);font-size:38px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:6px;}
+.pc-period{font-size:11px;color:var(--text3);margin-bottom:20px;font-weight:300;}
+.pc-divider{height:1px;background:var(--border);margin-bottom:20px;}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
+.pc-features li{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);}
+.pc-features li .chk{font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.chk.yes{background:rgba(74,222,128,.15);color:var(--accent);}
+.chk.prm{background:rgba(245,158,11,.15);color:var(--gold);}
+.pc-btn{width:100%;height:40px;border-radius:99px;border:1px solid var(--border2);background:transparent;color:var(--text);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;}
+.pc-btn.green{background:linear-gradient(135deg,var(--accent),#16a34a);color:#0C0E14;border:none;}
+.pc-btn.gold{background:linear-gradient(135deg,var(--gold),#d97706);color:#0C0E14;border:none;}
+.pc-btn.wa{background:linear-gradient(135deg,#25D366,#16a34a);color:#fff;border:none;}
+
+/* ── B. BRAND ── */
+#brand .brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+.brand-display{background:var(--panel);border:1px solid var(--border);border-radius:var(--r3);padding:40px;text-align:center;position:relative;overflow:hidden;}
+.brand-display::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(74,222,128,.08),transparent 60%);}
+.brand-logo-big{font-family:var(--font-display);font-size:52px;font-weight:900;letter-spacing:-2px;color:var(--text);margin-bottom:4px;position:relative;z-index:1;}
+.brand-logo-big span{color:var(--accent);}
+.brand-tagline{font-size:13px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:1;}
+.brand-epos-badge{display:inline-block;background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(34,211,238,.15));border:1px solid rgba(74,222,128,.3);border-radius:99px;padding:6px 20px;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:20px;position:relative;z-index:1;}
+.brand-url{font-family:var(--font-mono);font-size:12px;color:var(--text3);position:relative;z-index:1;display:block;margin-top:8px;}
+.brand-screen{background:#090D18;border:1px solid rgba(74,222,128,.2);border-radius:var(--r2);overflow:hidden;position:relative;z-index:1;margin-top:20px;}
+.brand-screen-bar{background:#111520;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
+.dot-r{width:9px;height:9px;border-radius:50%;background:#FF5F57}
+.dot-y{width:9px;height:9px;border-radius:50%;background:#FFBD2E}
+.dot-g{width:9px;height:9px;border-radius:50%;background:#28CA41}
+.brand-screen-url{font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-left:8px;}
+.brand-screen-body{padding:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.bs-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px;}
+.bs-label{font-size:8px;color:var(--text3);font-family:var(--font-mono);margin-bottom:4px;text-transform:uppercase;}
+.bs-val{font-size:14px;font-weight:700;font-family:var(--font-mono);color:var(--accent);}
+.brand-info{display:flex;flex-direction:column;gap:16px;}
+.brand-info-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:22px;}
+.bic-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.bic-body{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;}
+.brand-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.brand-pill{font-size:11px;font-weight:600;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);}
+.brand-values-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.bv-item{background:rgba(255,255,255,.03);border-radius:var(--r);padding:12px 14px;border-left:2px solid var(--accent);}
+.bv-icon{font-size:18px;margin-bottom:6px;display:block;}
+.bv-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:3px;}
+.bv-desc{font-size:11px;color:var(--text2);line-height:1.5;}
+
+/* ── C. BUSINESS DOMAIN ── */
+#domain .domain-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;}
+.dom-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:all .2s;}
+.dom-card:hover{border-color:var(--border2);transform:translateY(-3px);}
+.dom-icon{font-size:36px;margin-bottom:14px;display:block;}
+.dom-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.dom-desc{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;}
+.dom-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+.dom-tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;}
+.arch-diagram{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:28px;}
+.arch-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.arch-layers{display:flex;flex-direction:column;gap:8px;}
+.arch-layer{border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px;}
+.arch-layer-icon{font-size:20px;flex-shrink:0;}
+.arch-layer-text h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.arch-layer-text p{font-size:11px;color:var(--text2);font-weight:300;}
+
+/* ── D. TARGET AUDIENCE ── */
+#audience .aud-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;}
+.aud-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:24px;text-align:center;transition:all .2s;}
+.aud-card:hover{transform:translateY(-4px);border-color:var(--border2);}
+.aud-img{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;}
+.aud-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.aud-desc{font-size:12px;color:var(--text2);line-height:1.65;font-weight:300;margin-bottom:14px;}
+.aud-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.aud-tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(74,222,128,.1);color:var(--accent);}
+.testi-grid-d{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:24px;}
+.testi-card-d{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:20px;transition:all .2s;}
+.testi-card-d:hover{border-color:rgba(74,222,128,.25);}
+.tc-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.tc-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tc-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.2;}
+.tc-type{font-size:10px;color:var(--text3);margin-top:2px;}
+.tc-stars{color:var(--gold);font-size:11px;margin-bottom:8px;}
+.tc-quote{font-size:12px;color:var(--text2);line-height:1.65;font-weight:300;font-style:italic;}
+.tc-date{font-size:10px;color:var(--text3);margin-top:10px;display:flex;align-items:center;justify-content:space-between;}
+.verified{font-size:10px;font-weight:700;color:var(--accent);}
+
+/* ── E. FEATURES ── */
+#features .feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.feat-card-d{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:all .25s;cursor:default;}
+.feat-card-d:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3);}
+.feat-icon-d{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+.feat-title-d{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.feat-desc-d{font-size:12px;color:var(--text2);line-height:1.65;font-weight:300;}
+.feat-tags-d{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px;}
+.feat-tag-d{font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;}
+
+/* ── F. USE CASE DIAGRAM ── */
+#usecase .uc-diagram{background:var(--panel);border:1px solid var(--border);border-radius:var(--r3);padding:32px;overflow-x:auto;}
+.uc-svg-wrap{min-width:700px;}
+
+/* ── G. FAQS ── */
+#faqs .faq-list{display:flex;flex-direction:column;gap:8px;max-width:760px;}
+.faq-item{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:rgba(74,222,128,.3);}
+.faq-q{width:100%;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--font);font-size:14px;font-weight:600;color:var(--text);background:transparent;border:none;cursor:pointer;text-align:left;}
+.faq-icon{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all .25s;font-weight:300;}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:rgba(74,222,128,.15);color:var(--accent);}
+.faq-a{max-height:0;overflow:hidden;font-size:13px;color:var(--text2);line-height:1.75;transition:max-height .3s ease,padding .3s;padding:0 20px;font-weight:300;}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 18px;}
+
+/* ── H. ROADMAP ── */
+#roadmap .rm-timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:52px;}
+.rm-timeline::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),rgba(74,222,128,.1));}
+.rm-item{display:flex;gap:0;position:relative;padding-bottom:36px;}
+.rm-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:absolute;left:-52px;top:0;border:3px solid var(--bg);}
+.rm-dot.done{background:linear-gradient(135deg,var(--accent),#16a34a);box-shadow:0 4px 16px rgba(74,222,128,.3);}
+.rm-dot.now{background:linear-gradient(135deg,var(--gold),var(--orange));box-shadow:0 4px 16px rgba(245,158,11,.3);}
+.rm-dot.next{background:var(--panel);border-color:var(--border2);}
+.rm-content{flex:1;padding-top:4px;}
+.rm-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em;}
+.rm-badge.done{background:rgba(74,222,128,.12);color:var(--accent);}
+.rm-badge.now{background:rgba(245,158,11,.12);color:var(--gold);}
+.rm-badge.next{background:rgba(255,255,255,.06);color:var(--text3);}
+.rm-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.rm-desc{font-size:13px;color:var(--text2);line-height:1.65;font-weight:300;margin-bottom:12px;}
+.rm-features{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.rm-feat{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;font-weight:300;}
+.rm-feat::before{content:'→';color:var(--text3);flex-shrink:0;}
+
+/* ── I. CUSTOMIZATION ── */
+#customization .custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.custom-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:all .2s;}
+.custom-card:hover{border-color:var(--border2);}
+.custom-icon{font-size:32px;margin-bottom:14px;display:block;}
+.custom-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.custom-desc{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;}
+.custom-list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:14px;}
+.custom-list li{font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;font-weight:300;}
+.custom-list li::before{content:'•';color:var(--accent);flex-shrink:0;}
+.custom-cta{margin-top:32px;background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(34,211,238,.08));border:1px solid rgba(74,222,128,.25);border-radius:var(--r2);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.custom-cta-text h4{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.custom-cta-text p{font-size:13px;color:var(--text2);font-weight:300;}
+.wa-btn{height:42px;padding:0 24px;border-radius:99px;background:linear-gradient(135deg,#25D366,#16a34a);color:#fff;font-family:var(--font);font-size:13px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none;}
+
+/* ── J. COMPETITORS ── */
+#competitors .comp-table-wrap{border-radius:var(--r2);overflow-x:auto;border:1px solid var(--border);}
+.comp-table-wrap table{width:100%;border-collapse:collapse;min-width:700px;}
+.comp-table-wrap th{padding:14px 18px;font-size:11px;font-weight:700;color:var(--text2);background:var(--bg3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;}
+.comp-table-wrap th.us-head{background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(34,211,238,.1));color:var(--accent);}
+.comp-table-wrap td{padding:12px 18px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border);}
+.comp-table-wrap td.us-col{background:rgba(74,222,128,.05);color:var(--accent);font-weight:600;}
+.comp-table-wrap tr:last-child td{border-bottom:none}
+.comp-table-wrap tr:hover td{background:rgba(255,255,255,.02);}
+.chk-yes{color:var(--accent);font-weight:700;}
+.chk-no{color:var(--text3);}
+.chk-partial{color:var(--gold);}
+.comp-advantage{margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.comp-adv-card{background:var(--panel);border:1px solid rgba(74,222,128,.2);border-radius:var(--r2);padding:18px;text-align:center;}
+.comp-adv-icon{font-size:28px;margin-bottom:8px;display:block;}
+.comp-adv-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.comp-adv-desc{font-size:11px;color:var(--text2);line-height:1.5;font-weight:300;}
+
+/* ── K. COMPLEMENTARY ── */
+#complementary .comp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.comp-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:20px;text-align:center;transition:all .2s;cursor:default;}
+.comp-card:hover{transform:translateY(-3px);border-color:var(--border2);}
+.comp-img{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;}
+.comp-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.comp-desc{font-size:11px;color:var(--text2);line-height:1.5;font-weight:300;margin-bottom:10px;}
+.comp-price{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold);}
+
+/* ── L. PROCESS & POLICIES ── */
+#policies .proc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.proc-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:all .2s;}
+.proc-card:hover{border-color:var(--border2);}
+.proc-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.proc-icon-d{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.proc-title{font-size:15px;font-weight:700;color:var(--text);}
+.proc-steps{display:flex;flex-direction:column;gap:10px;}
+.proc-step-d{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text2);font-weight:300;}
+.proc-step-num{width:20px;height:20px;border-radius:50%;background:rgba(74,222,128,.12);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+
+/* CTA */
+.cta-section{background:var(--bg2);border-top:1px solid var(--border);padding:80px 5%;text-align:center;}
+.cta-section::before{display:none;}
+.cta-title{font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;margin-bottom:14px;}
+.cta-sub{font-size:15px;color:var(--text2);margin-bottom:36px;line-height:1.7;font-weight:300;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{height:50px;padding:0 32px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0E14;font-family:var(--font);font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.btn-secondary{height:50px;padding:0 28px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text);font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px;}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:12px;color:var(--text3);font-weight:300;}
+
+/* UTILS */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.tag-green{background:rgba(74,222,128,.1);color:var(--accent);}
+.tag-cyan{background:rgba(34,211,238,.1);color:var(--accent2);}
+.tag-gold{background:rgba(245,158,11,.1);color:var(--gold);}
+.tag-purple{background:rgba(167,139,250,.1);color:var(--accent5);}
+.tag-red{background:rgba(248,113,113,.1);color:var(--red);}
+.tag-blue{background:rgba(96,165,250,.1);color:var(--blue);}
+.tag-pink{background:rgba(244,114,182,.1);color:var(--accent4);}
+.tag-orange{background:rgba(251,146,60,.1);color:var(--orange);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--panel);border-radius:3px;}
+
+@media(max-width:960px){
+  .pricing-grid,.brand-grid,.domain-grid,.aud-grid,.feat-grid,.testi-grid-d,.comp-advantage,.comp-grid,.proc-grid,.rm-features{grid-template-columns:1fr 1fr;}
+  .hero-pk-grid{grid-template-columns:repeat(3,1fr);}
+  .custom-grid{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .pricing-grid,.brand-grid,.domain-grid,.aud-grid,.feat-grid,.testi-grid-d,.comp-advantage,.comp-grid{grid-template-columns:1fr;}
+  .pricing-top{grid-template-columns:1fr!important;}
+  .hero-pk-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-tabs{display:none;}
+  .proc-grid,.rm-features{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🏪</div>
+    <div class="nav-logo-text">Aulia<span>Soft</span></div>
+  </a>
+  <div class="nav-tabs" id="navTabs">
+    <a class="nav-tab" href="#pricing" onclick="setActive(this)">A. Pricing</a>
+    <a class="nav-tab" href="#brand" onclick="setActive(this)">B. Brand</a>
+    <a class="nav-tab" href="#domain" onclick="setActive(this)">C. Domain</a>
+    <a class="nav-tab" href="#audience" onclick="setActive(this)">D. Audience</a>
+    <a class="nav-tab" href="#features" onclick="setActive(this)">E. Fitur</a>
+    <a class="nav-tab" href="#usecase" onclick="setActive(this)">F. Use Case</a>
+    <a class="nav-tab" href="#faqs" onclick="setActive(this)">G. FAQs</a>
+    <a class="nav-tab" href="#roadmap" onclick="setActive(this)">H. Roadmap</a>
+    <a class="nav-tab" href="#customization" onclick="setActive(this)">I. Custom</a>
+    <a class="nav-tab" href="#competitors" onclick="setActive(this)">J. Kompetitor</a>
+    <a class="nav-tab" href="#complementary" onclick="setActive(this)">K. Pendukung</a>
+    <a class="nav-tab" href="#policies" onclick="setActive(this)">L. Kebijakan</a>
+  </div>
+  <a class="nav-cta" href="https://www.auliasoft.com" target="_blank">Mulai →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge"><div class="hero-badge-dot"></div>Eksplorasi Product Knowledge Lengkap</div>
+  <h1 class="hero-title">
+    <span class="hl-green">AuliaSoft</span><br>
+    E-POS <span class="hl-gold">Online</span>
+  </h1>
+  <p class="hero-sub">Aplikasi Kasir Digital Modern untuk UMKM Indonesia — Kelola toko, stok, pembelian, penjualan, dan laporan keuangan dalam satu platform berbasis cloud.</p>
+  <div class="hero-pk-grid">
+    <a class="pk-chip" href="#pricing"><div class="pk-num">A</div><span class="pk-icon">💰</span><span class="pk-label">Pricing</span></a>
+    <a class="pk-chip" href="#brand"><div class="pk-num">B</div><span class="pk-icon">🏷️</span><span class="pk-label">Brand</span></a>
+    <a class="pk-chip" href="#domain"><div class="pk-num">C</div><span class="pk-icon">🌐</span><span class="pk-label">Domain Bisnis</span></a>
+    <a class="pk-chip" href="#audience"><div class="pk-num">D</div><span class="pk-icon">🎯</span><span class="pk-label">Target Audience</span></a>
+    <a class="pk-chip" href="#features"><div class="pk-num">E</div><span class="pk-icon">⚙️</span><span class="pk-label">Fitur Produk</span></a>
+    <a class="pk-chip" href="#usecase"><div class="pk-num">F</div><span class="pk-icon">📊</span><span class="pk-label">Use Case</span></a>
+    <a class="pk-chip" href="#faqs"><div class="pk-num">G</div><span class="pk-icon">❓</span><span class="pk-label">FAQs</span></a>
+    <a class="pk-chip" href="#roadmap"><div class="pk-num">H</div><span class="pk-icon">🗺️</span><span class="pk-label">Roadmap</span></a>
+    <a class="pk-chip" href="#customization"><div class="pk-num">I</div><span class="pk-icon">🔧</span><span class="pk-label">Customization</span></a>
+    <a class="pk-chip" href="#competitors"><div class="pk-num">J</div><span class="pk-icon">🏆</span><span class="pk-label">Kompetitor</span></a>
+    <a class="pk-chip" href="#complementary"><div class="pk-num">K</div><span class="pk-icon">🔗</span><span class="pk-label">Pendukung</span></a>
+    <a class="pk-chip" href="#policies"><div class="pk-num">L</div><span class="pk-icon">📋</span><span class="pk-label">Proses & Kebijakan</span></a>
+  </div>
+</section>
+
+<!-- ══ A. PRICING ══ -->
+<div class="section-wrap">
+<div class="section" id="pricing">
+  <div class="sec-label"><span class="sec-label-num">A</span><span class="sec-label-tag" style="color:var(--accent)">Pricing</span></div>
+  <h2 class="sec-title reveal">Harga Transparan, Tanpa Biaya Tersembunyi</h2>
+  <p class="sec-sub reveal">AuliaSoft E-POS menawarkan paket berlangganan bulanan dengan harga terjangkau untuk semua skala UMKM. Sumber: <a href="https://www.auliasoft.com/kategori-produk/tokowarung" target="_blank" style="color:var(--accent);">auliasoft.com</a></p>
+
+  <div class="pricing-top reveal" style="display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;margin-bottom:48px;">
+    <div class="promo-card">
+      <div class="promo-lbl">⚡ Versi Promo</div>
+      <div class="promo-price">50K</div>
+      <div class="promo-period">/bulan</div>
+      <div class="promo-name">A-Warung & A-POS</div>
+      <div style="font-size:11px;color:var(--accent2);margin-top:8px;font-weight:600;">Aplikasi Warung Cafe & Toko UMKM</div>
+    </div>
+    <div class="promo-desc">
+      <p style="font-size:14px;color:var(--text);font-weight:600;margin-bottom:8px;">Paket Entry Level — A-Warung & A-POS</p>
+      <p>AuliaSoft menyediakan dua produk entry level dengan harga promosi Rp 50.000/bulan:</p>
+      <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:7px;">
+        <li style="font-size:13px;color:var(--text2);display:flex;gap:8px;"><span style="color:var(--accent);font-weight:700;">→</span><span><strong style="color:var(--text)">Aplikasi Warung Cafe (A-Warung)</strong> — Rp 50.000/bulan. Cocok untuk warung, cafe, dan usaha F&B kecil.</span></li>
+        <li style="font-size:13px;color:var(--text2);display:flex;gap:8px;"><span style="color:var(--accent);font-weight:700;">→</span><span><strong style="color:var(--text)">Aplikasi Toko UMKM (A-POS)</strong> — Rp 50.000/bulan. Kasir digital dasar untuk toko retail dan UMKM.</span></li>
+      </ul>
+      <p style="font-size:12px;color:var(--text3);margin-top:14px;">Untuk paket E-POS Online lengkap, tersedia tiga tier: Basic, Standard, dan Premium (lihat di bawah).</p>
+    </div>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="price-card featured">
+      <div class="popular-pill">✦ Populer</div>
+      <div class="pc-tier">E-POS Basic</div>
+      <div class="pc-price" style="color:var(--accent)">Rp 149.999</div>
+      <div class="pc-period">/bulan · Singel Outlet</div>
+      <div class="pc-divider"></div>
+      <ul class="pc-features">
+        <li><span class="chk yes">✓</span>Singel Outlet</li>
+        <li><span class="chk yes">✓</span>Toko Online</li>
+        <li><span class="chk yes">✓</span>Aplikasi Kasir Online</li>
+        <li><span class="chk yes">✓</span>Manajemen Inventori</li>
+        <li><span class="chk yes">✓</span>CRM (Pelanggan)</li>
+        <li><span class="chk yes">✓</span>Laporan Lengkap</li>
+        <li><span class="chk yes">✓</span>Manajemen Karyawan</li>
+        <li><span class="chk yes">✓</span>Pencatatan Keuangan (Invoice, SO, DO)</li>
+        <li><span class="chk yes">✓</span>Digital Payment (QRIS)</li>
+      </ul>
+      <a class="pc-btn green" href="https://wa.me/6281241945881" target="_blank">💬 Pesan via WhatsApp</a>
+    </div>
+
+    <div class="price-card">
+      <div class="pc-tier">E-POS Standard</div>
+      <div class="pc-price" style="color:var(--accent2)">Rp 349.999</div>
+      <div class="pc-period">/bulan · Multi Outlet</div>
+      <div class="pc-divider"></div>
+      <ul class="pc-features">
+        <li><span class="chk yes">✓</span>Multi Outlet</li>
+        <li><span class="chk yes">✓</span>Toko Online</li>
+        <li><span class="chk yes">✓</span>Kasir (atur meja, multisatuan)</li>
+        <li><span class="chk yes">✓</span>Inventori (COGS, produksi stok, transfer antar outlet)</li>
+        <li><span class="chk yes">✓</span>CRM + Deposit Pelanggan</li>
+        <li><span class="chk yes">✓</span>Laporan + Analisa Bisnis</li>
+        <li><span class="chk yes">✓</span>Karyawan (absensi foto, otorisasi advance)</li>
+        <li><span class="chk yes">✓</span>Akuntansi Lengkap (CoA, auto posting)</li>
+        <li><span class="chk yes">✓</span>QRIS Dynamic, EDC, Struk Digital</li>
+        <li><span class="chk yes">✓</span>Aplikasi Owner</li>
+        <li><span class="chk yes">✓</span>Order Online</li>
+      </ul>
+      <a class="pc-btn" href="https://wa.me/6281241945881" target="_blank" style="border-color:rgba(34,211,238,.3);color:var(--accent2);">💬 Pesan via WhatsApp</a>
+    </div>
+
+    <div class="price-card premium-card">
+      <div class="pc-tier">E-POS Premium</div>
+      <div class="pc-price" style="color:var(--gold)">Rp 749.999</div>
+      <div class="pc-period">/bulan · Semua Fitur</div>
+      <div class="pc-divider"></div>
+      <ul class="pc-features">
+        <li><span class="chk prm">✓</span>Multi Outlet + Omnichannel</li>
+        <li><span class="chk prm">✓</span>Toko Online (Shopee, Tokopedia, GrabMart, dll)</li>
+        <li><span class="chk prm">✓</span>Kasir (serial number, batch, grosir, reservasi)</li>
+        <li><span class="chk prm">✓</span>Inventori (serial/batch, permintaan barang)</li>
+        <li><span class="chk prm">✓</span>CRM + Deposit Pelanggan</li>
+        <li><span class="chk prm">✓</span>Laporan + Analisa Bisnis</li>
+        <li><span class="chk prm">✓</span>Payroll (shift, penggajian, transfer gaji)</li>
+        <li><span class="chk prm">✓</span>Akuntansi Lengkap</li>
+        <li><span class="chk prm">✓</span>QRIS Dynamic + EDC Debit/Kredit</li>
+        <li><span class="chk prm">✓</span>Aulia Teams (geolokasi, e-payslip, broadcast)</li>
+        <li><span class="chk prm">✓</span>Order Online (GrabFood, GoFood, QR e-menu)</li>
+      </ul>
+      <a class="pc-btn gold" href="https://wa.me/6281241945881" target="_blank">💬 Hubungi Sales</a>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:18px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;" class="reveal">
+    <span style="font-size:18px;">💳</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">Cara Pembayaran</div>
+      <div style="font-size:12px;color:var(--text2);font-weight:300;">Transfer ke rekening BRI <strong style="color:var(--text);font-family:var(--font-mono);">7890 0100 5408 534</strong> a/n PT Mitra Aulia Indonesia, atau bayar via QRIS. Konfirmasi via WhatsApp ke <strong style="color:var(--accent)">081241945881</strong>. Akun aktif dalam 1×24 jam.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ B. BRAND ══ -->
+<div class="section-wrap">
+<div class="section" id="brand">
+  <div class="sec-label"><span class="sec-label-num">B</span><span class="sec-label-tag" style="color:var(--accent2)">Brand</span></div>
+  <h2 class="sec-title reveal">Identitas Merek AuliaSoft</h2>
+  <p class="sec-sub reveal">AuliaSoft adalah merek produk PT Mitra Aulia Indonesia — penyedia solusi digital untuk UMKM, koperasi, dan lembaga keuangan Indonesia.</p>
+
+  <div class="brand-grid reveal">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="brand-display">
+        <div class="brand-epos-badge">● Aplikasi Kasir E-POS Online</div>
+        <div class="brand-logo-big">Aulia<span>Soft</span></div>
+        <div class="brand-tagline">Jalankan Bisnis Tanpa Ribet</div>
+        <span class="brand-url">www.auliasoft.com</span>
+        <div class="brand-screen" style="margin-top:20px;">
+          <div class="brand-screen-bar">
+            <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+            <span class="brand-screen-url">pos.auliasoft.com — Dashboard Kasir</span>
+          </div>
+          <div style="background:#090D18;padding:14px;">
+            <div style="background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-size:11px;font-weight:700;color:var(--text);">Selamat Datang, Mitra Aulia 👋</div>
+              <div style="font-size:9px;background:rgba(74,222,128,.2);color:var(--accent);padding:3px 10px;border-radius:99px;font-weight:700;">● Live</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+              <div class="bs-card"><div class="bs-label">Penjualan</div><div class="bs-val">Rp 4,2jt</div></div>
+              <div class="bs-card"><div class="bs-label">Net/Laba</div><div class="bs-val" style="color:var(--gold);">Rp 1,8jt</div></div>
+              <div class="bs-card"><div class="bs-label">Transaksi</div><div class="bs-val" style="color:var(--accent2);">47 trx</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brand-info">
+      <div class="brand-info-card">
+        <div class="bic-title">🏢 Tentang Perusahaan</div>
+        <div class="bic-body">AuliaSoft adalah brand produk dari <strong style="color:var(--text)">PT Mitra Aulia Indonesia</strong>. Perusahaan ini menyediakan solusi digital berbasis cloud untuk UMKM retail, koperasi, LKM/LKMS, BUMDes, Mini Bank, dan lembaga keuangan syariah di seluruh Indonesia.</div>
+        <div class="brand-pills" style="margin-top:14px;">
+          <span class="brand-pill">🇮🇩 Produk Lokal</span>
+          <span class="brand-pill">☁️ Berbasis Cloud</span>
+          <span class="brand-pill">📱 Multi-Device</span>
+          <span class="brand-pill">💡 SaaS Model</span>
+        </div>
+      </div>
+      <div class="brand-info-card">
+        <div class="bic-title">💻 Produk Unggulan AuliaSoft</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px;">E-POS Online — Aplikasi Kasir Toko/Warung</div>
+            <div style="font-size:11px;color:var(--text2);">Basic Rp 149.999 / Standard Rp 349.999 / Premium Rp 749.999 /bln</div>
+          </div>
+          <div style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:2px;">A-Warung & A-POS — Entry Level</div>
+            <div style="font-size:11px;color:var(--text2);">Rp 50.000/bulan untuk warung, cafe & toko kecil</div>
+          </div>
+          <div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:12px;font-weight:700;color:var(--accent5);margin-bottom:2px;">Aplikasi Koperasi, BUMDes, Mini Bank, LAZIS</div>
+            <div style="font-size:11px;color:var(--text2);">Mulai Rp 1.500.000 — solusi lembaga keuangan digital</div>
+          </div>
+        </div>
+      </div>
+      <div class="brand-info-card">
+        <div class="bic-title">✨ Nilai Merek</div>
+        <div class="brand-values-grid">
+          <div class="bv-item"><span class="bv-icon">🤝</span><div class="bv-title">Jujur & Transparan</div><div class="bv-desc">Tidak ada biaya tersembunyi</div></div>
+          <div class="bv-item" style="border-color:var(--accent2);"><span class="bv-icon">🚀</span><div class="bv-title" style="color:var(--accent2);">Inovatif</div><div class="bv-desc">Berkembang sesuai kebutuhan UMKM</div></div>
+          <div class="bv-item" style="border-color:var(--accent4);"><span class="bv-icon">❤️</span><div class="bv-title" style="color:var(--accent4);">Peduli UMKM</div><div class="bv-desc">Fitur dari masukan pengguna nyata</div></div>
+          <div class="bv-item" style="border-color:var(--gold);"><span class="bv-icon">🛡️</span><div class="bv-title" style="color:var(--gold);">Andal & Aman</div><div class="bv-desc">Enkripsi AES-256, backup otomatis</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ C. BUSINESS DOMAIN ══ -->
+<div class="section-wrap">
+<div class="section" id="domain">
+  <div class="sec-label"><span class="sec-label-num">C</span><span class="sec-label-tag" style="color:var(--accent5)">Business Domain</span></div>
+  <h2 class="sec-title reveal">Aplikasi Kasir Modern — Domain Bisnis E-POS</h2>
+  <p class="sec-sub reveal">AuliaSoft E-POS adalah sistem Point of Sale (POS) berbasis cloud yang mengelola seluruh siklus bisnis retail — dari pembelian barang hingga laporan keuangan terintegrasi.</p>
+
+  <div class="domain-grid reveal">
+    <div class="dom-card" style="border-color:rgba(74,222,128,.2);">
+      <span class="dom-icon">🛒</span>
+      <div class="dom-title">Retail & Toko Umum</div>
+      <div class="dom-desc">Toko kelontong, minimarket, toko fashion, toko material bangunan, apotek, dan berbagai jenis toko retail umum.</div>
+      <div class="dom-tags"><span class="dom-tag tag-green">Kasir POS</span><span class="dom-tag tag-green">Stok real-time</span></div>
+    </div>
+    <div class="dom-card" style="border-color:rgba(34,211,238,.2);">
+      <span class="dom-icon">🍜</span>
+      <div class="dom-title">F&B / Warung Cafe</div>
+      <div class="dom-desc">Warung makan, cafe, rumah makan, kedai kopi, restoran kecil — dengan fitur atur meja dan QR e-menu.</div>
+      <div class="dom-tags"><span class="dom-tag tag-cyan">Atur Meja</span><span class="dom-tag tag-cyan">QR e-Menu</span></div>
+    </div>
+    <div class="dom-card" style="border-color:rgba(245,158,11,.2);">
+      <span class="dom-icon">🔧</span>
+      <div class="dom-title">Jasa & Servis</div>
+      <div class="dom-desc">Bengkel, salon, laundry, toko HP — dengan modul pencatatan order servis dan notifikasi pelanggan otomatis.</div>
+      <div class="dom-tags"><span class="dom-tag tag-gold">Order Servis</span><span class="dom-tag tag-gold">Notif WA</span></div>
+    </div>
+  </div>
+
+  <div class="arch-diagram reveal" style="margin-top:20px;">
+    <div class="arch-title">🏗️ Arsitektur Sistem E-POS Online</div>
+    <div class="arch-layers">
+      <div class="arch-layer" style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);">
+        <span class="arch-layer-icon">📱</span>
+        <div class="arch-layer-text">
+          <h4 style="color:var(--accent)">Layer Akses (Multi-Device)</h4>
+          <p>Laptop / PC · Tablet · HP Android · iPhone · Printer Thermal · Scanner Barcode</p>
+        </div>
+      </div>
+      <div class="arch-layer" style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);">
+        <span class="arch-layer-icon">⚙️</span>
+        <div class="arch-layer-text">
+          <h4 style="color:var(--accent2)">Layer Aplikasi (E-POS Online)</h4>
+          <p>Kasir POS · Manajemen Stok · Pembelian · Penjualan · Keuangan · CRM · Karyawan · Payroll · Toko Online</p>
+        </div>
+      </div>
+      <div class="arch-layer" style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);">
+        <span class="arch-layer-icon">🔌</span>
+        <div class="arch-layer-text">
+          <h4 style="color:var(--accent5)">Layer Integrasi</h4>
+          <p>QRIS · EDC Bank · WhatsApp Notifikasi · Tokopedia · Shopee · GrabFood · GoFood · Email/SMS</p>
+        </div>
+      </div>
+      <div class="arch-layer" style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);">
+        <span class="arch-layer-icon">☁️</span>
+        <div class="arch-layer-text">
+          <h4 style="color:var(--gold)">Layer Cloud & Data</h4>
+          <p>Server Cloud Aman · Enkripsi AES-256 · Backup Otomatis Harian · Uptime 99% · Akses Real-time</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ D. TARGET AUDIENCE ══ -->
+<div class="section-wrap">
+<div class="section" id="audience">
+  <div class="sec-label"><span class="sec-label-num">D</span><span class="sec-label-tag" style="color:var(--gold)">Target Audience</span></div>
+  <h2 class="sec-title reveal">Siapa Target Pengguna E-POS?</h2>
+  <p class="sec-sub reveal">AuliaSoft E-POS dirancang khusus untuk pelaku UMKM retail dan jasa di Indonesia yang ingin beralih dari pencatatan manual ke sistem digital.</p>
+
+  <div class="aud-grid reveal">
+    <div class="aud-card">
+      <div class="aud-img" style="background:rgba(74,222,128,.1);">🏪</div>
+      <div class="aud-title">Pemilik Toko Retail</div>
+      <div class="aud-desc">Pemilik toko kelontong, minimarket, toko fashion, toko alat tulis, apotek, toko material yang ingin digitalisasi kasir dan stok barang.</div>
+      <div class="aud-tags"><span class="aud-tag">Kasir Digital</span><span class="aud-tag">Stok Otomatis</span><span class="aud-tag">Laporan Harian</span></div>
+    </div>
+    <div class="aud-card">
+      <div class="aud-img" style="background:rgba(34,211,238,.1);">🍜</div>
+      <div class="aud-title">Pelaku Usaha F&B</div>
+      <div class="aud-desc">Pemilik warung makan, cafe, kedai kopi, dan restoran kecil yang butuh fitur atur meja, QR e-menu, dan order online terintegrasi.</div>
+      <div class="aud-tags"><span class="aud-tag" style="background:rgba(34,211,238,.1);color:var(--accent2);">Atur Meja</span><span class="aud-tag" style="background:rgba(34,211,238,.1);color:var(--accent2);">Order Online</span></div>
+    </div>
+    <div class="aud-card">
+      <div class="aud-img" style="background:rgba(245,158,11,.1);">🔧</div>
+      <div class="aud-title">Usaha Jasa & Servis</div>
+      <div class="aud-desc">Bengkel motor/mobil, salon kecantikan, laundry, dan toko HP yang perlu pencatatan order servis, estimasi biaya, dan notifikasi pelanggan.</div>
+      <div class="aud-tags"><span class="aud-tag" style="background:rgba(245,158,11,.1);color:var(--gold);">Modul Servis</span><span class="aud-tag" style="background:rgba(245,158,11,.1);color:var(--gold);">Notif WA</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:8px;" class="reveal">
+    <h3 style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px;"><span style="color:var(--accent)">⭐</span> Testimoni Pengguna AuliaSoft (Sumber: auliasoft.com/testimoni)</h3>
+    <div class="testi-grid-d">
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(74,222,128,.15);">🏪</div>
+          <div><div class="tc-name">Toko Rahmi</div><div class="tc-type">Toko Retail · Pengguna sejak 2021</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Sejak 2021, Aulia Soft jadi kunci manajemen dan akuntabilitas toko kami. Aplikasi yang mudah digunakan dan membantu dalam pencatatan transaksi sehari-hari."</div>
+        <div class="tc-date"><span>07 Oct 2025</span><span class="verified">Verified ✓</span></div>
+      </div>
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(34,211,238,.15);">🏦</div>
+          <div><div class="tc-name">BMT Karima Sejahtera</div><div class="tc-type">Lembaga Keuangan · Pengguna sejak 2021</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Laporan keuangan akurat dan real time bersama Aulia Soft. Menggunakan aplikasi auliasoft sejak 2021 — aplikasi yang mudah digunakan dengan maintenance yang cepat."</div>
+        <div class="tc-date"><span>07 Oct 2025</span><span class="verified">Verified ✓</span></div>
+      </div>
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(167,139,250,.15);">🏬</div>
+          <div><div class="tc-name">Toko Merdu Jaya Mart</div><div class="tc-type">Toko Warung · Pengguna sejak 2024</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Penggunaan aplikasi auliasoft sejak awal tahun 2024 untuk kegiatan management toko sangat membantu dan mudah dalam penggunaan sehari-hari."</div>
+        <div class="tc-date"><span>07 Oct 2025</span><span class="verified">Verified ✓</span></div>
+      </div>
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(245,158,11,.15);">🏫</div>
+          <div><div class="tc-name">KDMP Sukamanah</div><div class="tc-type">Kopdes · Pengguna 2025</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Pendampingannya sangat responsif menambah kepercayaan diri kami. Aplikasinya mudah digunakan dan sangat membantu operasional kami."</div>
+        <div class="tc-date"><span>29 Jan 2026</span><span class="verified">Verified ✓</span></div>
+      </div>
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(244,114,182,.15);">🏛️</div>
+          <div><div class="tc-name">Bank Mini UNUJA</div><div class="tc-type">Mini Bank · Pengguna 2 tahun</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Sudah 2 tahun menggunakan aplikasi Auliasoft, sangat merasa nyaman karena mudah dipahami dan RESPON maintenance yang sangat cepat."</div>
+        <div class="tc-date"><span>07 Oct 2025</span><span class="verified">Verified ✓</span></div>
+      </div>
+      <div class="testi-card-d">
+        <div class="tc-head">
+          <div class="tc-avatar" style="background:rgba(96,165,250,.15);">🕌</div>
+          <div><div class="tc-name">KSU BMT Rahmat Syariah</div><div class="tc-type">BMT · Keuangan Syariah</div></div>
+        </div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Dengan Aulia Soft membuat laporan keuangan lebih mudah, cepat dan menyenangkan. Sangat direkomendasikan untuk semua pelaku usaha."</div>
+        <div class="tc-date"><span>07 Oct 2025</span><span class="verified">Verified ✓</span></div>
+      </div>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <a href="https://www.auliasoft.com/testimoni" target="_blank" style="font-size:13px;color:var(--accent);text-decoration:none;font-weight:600;">Lihat 53+ Testimoni Terverifikasi di auliasoft.com/testimoni →</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ E. FEATURES ══ -->
+<div class="section-wrap">
+<div class="section" id="features">
+  <div class="sec-label"><span class="sec-label-num">E</span><span class="sec-label-tag" style="color:var(--accent4)">Product Features</span></div>
+  <h2 class="sec-title reveal">Fitur-Fitur Utama E-POS Online</h2>
+  <p class="sec-sub reveal">AuliaSoft E-POS menyediakan fitur lengkap mulai dari login multi-user, manajemen stok, pembelian, penjualan, stok opname, hingga laporan keuangan terintegrasi.</p>
+
+  <div class="feat-grid reveal">
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(74,222,128,.1);">🔐</div>
+      <div class="feat-title-d">Login & Multi-User</div>
+      <div class="feat-desc-d">Sistem login aman untuk berbagai level pengguna: owner, kasir, admin stok, dan manajer. Setiap user punya hak akses berbeda sesuai jabatan.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-green">Role-based</span><span class="feat-tag-d tag-green">Multi-kasir</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(34,211,238,.1);">🛒</div>
+      <div class="feat-title-d">Kasir POS Cepat</div>
+      <div class="feat-desc-d">Proses transaksi dalam hitungan detik. Scan barcode produk, pilih jumlah, terima pembayaran tunai/QRIS/transfer/kartu, cetak struk digital atau thermal.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-cyan">Barcode scan</span><span class="feat-tag-d tag-cyan">QRIS</span><span class="feat-tag-d tag-cyan">Struk digital</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(245,158,11,.1);">📦</div>
+      <div class="feat-title-d">Manajemen Stok</div>
+      <div class="feat-desc-d">Pantau stok produk secara real-time. Input stok masuk dari supplier, catat stok keluar dari penjualan, retur barang, dan notifikasi otomatis saat stok kritis.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-gold">Real-time</span><span class="feat-tag-d tag-gold">Alert kritis</span><span class="feat-tag-d tag-gold">Multi satuan</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(167,139,250,.1);">🛍️</div>
+      <div class="feat-title-d">Modul Pembelian</div>
+      <div class="feat-desc-d">Catat pesanan pembelian (Purchase Order) ke supplier, terima barang, perbarui stok otomatis, dan kelola hutang dagang ke supplier secara terstruktur.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-purple">Purchase Order</span><span class="feat-tag-d tag-purple">Hutang dagang</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(248,113,113,.1);">💸</div>
+      <div class="feat-title-d">Modul Penjualan</div>
+      <div class="feat-desc-d">Pencatatan penjualan tunai dan tempo. Faktur penjualan otomatis, sales order (SO), delivery order (DO), dan manajemen piutang pelanggan terintegrasi.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-red">SO/DO</span><span class="feat-tag-d tag-red">Piutang</span><span class="feat-tag-d tag-red">Invoice</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(251,146,60,.1);">🔢</div>
+      <div class="feat-title-d">Stok Opname</div>
+      <div class="feat-desc-d">Lakukan penghitungan stok fisik secara periodik. Sistem mencatat selisih antara stok sistem dan stok fisik untuk koreksi dan audit internal toko.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-orange">Selisih stok</span><span class="feat-tag-d tag-orange">Audit</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(96,165,250,.1);">📊</div>
+      <div class="feat-title-d">Laporan Stok</div>
+      <div class="feat-desc-d">Laporan mutasi stok harian dan bulanan, produk terlaris, produk lambat terjual, nilai persediaan, dan COGS (Cost of Goods Sold) rata-rata.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-blue">Mutasi stok</span><span class="feat-tag-d tag-blue">COGS</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(74,222,128,.1);">📋</div>
+      <div class="feat-title-d">Laporan Pembelian</div>
+      <div class="feat-desc-d">Rekap pembelian per supplier, per periode, dan per produk. Pantau hutang jatuh tempo, riwayat pembayaran, dan performa supplier.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-green">Per supplier</span><span class="feat-tag-d tag-green">Hutang tempo</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(34,211,238,.1);">📈</div>
+      <div class="feat-title-d">Laporan Penjualan</div>
+      <div class="feat-desc-d">Laporan penjualan harian, mingguan, bulanan. Grafik visual, perbandingan periode, analisa produk terlaris, dan export ke Excel/PDF.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-cyan">Grafik visual</span><span class="feat-tag-d tag-cyan">Export Excel</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(245,158,11,.1);">💰</div>
+      <div class="feat-title-d">Laporan Keuangan</div>
+      <div class="feat-desc-d">Akuntansi lengkap: Chart of Accounts (CoA), auto posting jurnal, laporan laba rugi, neraca, arus kas, dan laporan keuangan sesuai standar akuntansi.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-gold">CoA</span><span class="feat-tag-d tag-gold">Auto posting</span><span class="feat-tag-d tag-gold">Laba rugi</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(167,139,250,.1);">👥</div>
+      <div class="feat-title-d">CRM & Pelanggan</div>
+      <div class="feat-desc-d">Database pelanggan, riwayat transaksi, program loyalitas, deposit pelanggan, dan pengiriman tagihan/pengingat otomatis via WhatsApp.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-purple">Database</span><span class="feat-tag-d tag-purple">Piutang</span><span class="feat-tag-d tag-purple">Loyalitas</span></div>
+    </div>
+    <div class="feat-card-d">
+      <div class="feat-icon-d" style="background:rgba(244,114,182,.1);">👨‍💼</div>
+      <div class="feat-title-d">Karyawan & Payroll</div>
+      <div class="feat-desc-d">Manajemen data karyawan, absensi dengan foto (geolokasi), shift management, struktur gaji, penggajian otomatis, transfer gaji, dan e-payslip.</div>
+      <div class="feat-tags-d"><span class="feat-tag-d tag-pink">Absensi foto</span><span class="feat-tag-d tag-pink">Payroll</span><span class="feat-tag-d tag-pink">e-Payslip</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ F. USE CASE ══ -->
+<div class="section-wrap">
+<div class="section" id="usecase">
+  <div class="sec-label"><span class="sec-label-num">F</span><span class="sec-label-tag" style="color:var(--blue)">Use Case Diagram</span></div>
+  <h2 class="sec-title reveal">Diagram Use Case E-POS Online</h2>
+  <p class="sec-sub reveal">Diagram berikut menggambarkan interaksi aktor utama dengan fitur-fitur sistem AuliaSoft E-POS.</p>
+
+  <div class="uc-diagram reveal">
+    <div class="uc-svg-wrap">
+      <svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'DM Sans',sans-serif;">
+        <!-- System boundary -->
+        <rect x="180" y="20" width="540" height="580" rx="12" fill="none" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="450" y="46" text-anchor="middle" fill="#4ADE80" font-size="12" font-weight="700" letter-spacing="0.08em">SISTEM AULIA SOFT E-POS ONLINE</text>
+
+        <!-- Use case ellipses - col 1 -->
+        <ellipse cx="320" cy="100" rx="90" ry="22" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.35)" stroke-width="1.2"/>
+        <text x="320" y="104" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Login & Kelola User</text>
+
+        <ellipse cx="320" cy="170" rx="90" ry="22" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.35)" stroke-width="1.2"/>
+        <text x="320" y="174" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Proses Transaksi Kasir</text>
+
+        <ellipse cx="320" cy="240" rx="90" ry="22" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.35)" stroke-width="1.2"/>
+        <text x="320" y="244" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Kelola Stok & Inventori</text>
+
+        <ellipse cx="320" cy="310" rx="90" ry="22" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.35)" stroke-width="1.2"/>
+        <text x="320" y="314" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Modul Pembelian</text>
+
+        <ellipse cx="320" cy="380" rx="90" ry="22" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.35)" stroke-width="1.2"/>
+        <text x="320" y="384" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Modul Penjualan</text>
+
+        <ellipse cx="320" cy="450" rx="90" ry="22" fill="rgba(251,146,60,0.08)" stroke="rgba(251,146,60,0.35)" stroke-width="1.2"/>
+        <text x="320" y="454" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Stok Opname</text>
+
+        <ellipse cx="320" cy="520" rx="90" ry="22" fill="rgba(96,165,250,0.08)" stroke="rgba(96,165,250,0.35)" stroke-width="1.2"/>
+        <text x="320" y="524" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Laporan Keuangan</text>
+
+        <!-- Use case ellipses - col 2 -->
+        <ellipse cx="590" cy="100" rx="90" ry="22" fill="rgba(244,114,182,0.08)" stroke="rgba(244,114,182,0.35)" stroke-width="1.2"/>
+        <text x="590" y="104" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Kelola Karyawan</text>
+
+        <ellipse cx="590" cy="170" rx="90" ry="22" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.35)" stroke-width="1.2"/>
+        <text x="590" y="174" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">CRM & Pelanggan</text>
+
+        <ellipse cx="590" cy="240" rx="90" ry="22" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.35)" stroke-width="1.2"/>
+        <text x="590" y="244" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Toko Online</text>
+
+        <ellipse cx="590" cy="310" rx="90" ry="22" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.35)" stroke-width="1.2"/>
+        <text x="590" y="314" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Payroll & Absensi</text>
+
+        <ellipse cx="590" cy="380" rx="90" ry="22" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.35)" stroke-width="1.2"/>
+        <text x="590" y="384" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Digital Payment</text>
+
+        <ellipse cx="590" cy="450" rx="90" ry="22" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.35)" stroke-width="1.2"/>
+        <text x="590" y="454" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Laporan Stok & Beli</text>
+
+        <ellipse cx="590" cy="520" rx="90" ry="22" fill="rgba(251,146,60,0.08)" stroke="rgba(251,146,60,0.35)" stroke-width="1.2"/>
+        <text x="590" y="524" text-anchor="middle" fill="#F0F2F8" font-size="10" font-weight="600">Order Servis</text>
+
+        <!-- Actor: Owner -->
+        <circle cx="60" cy="100" r="18" fill="none" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="118" x2="60" y2="155" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="130" x2="40" y2="145" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="130" x2="80" y2="145" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="155" x2="44" y2="175" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="155" x2="76" y2="175" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <text x="60" y="190" text-anchor="middle" fill="#4ADE80" font-size="11" font-weight="700">Owner</text>
+
+        <!-- Actor: Kasir -->
+        <circle cx="60" cy="310" r="18" fill="none" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="328" x2="60" y2="365" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="340" x2="40" y2="355" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="340" x2="80" y2="355" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="365" x2="44" y2="385" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <line x1="60" y1="365" x2="76" y2="385" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+        <text x="60" y="400" text-anchor="middle" fill="#22D3EE" font-size="11" font-weight="700">Kasir</text>
+
+        <!-- Actor: Pelanggan -->
+        <circle cx="860" cy="240" r="18" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <line x1="860" y1="258" x2="860" y2="295" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <line x1="860" y1="270" x2="840" y2="285" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <line x1="860" y1="270" x2="880" y2="285" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <line x1="860" y1="295" x2="844" y2="315" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <line x1="860" y1="295" x2="876" y2="315" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+        <text x="860" y="330" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="700">Pelanggan</text>
+
+        <!-- Lines Owner → use cases -->
+        <line x1="78" y1="100" x2="230" y2="100" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <line x1="78" y1="100" x2="230" y2="170" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="78" y1="100" x2="230" y2="520" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="78" y1="100" x2="500" y2="100" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="78" y1="100" x2="500" y2="310" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+        <!-- Lines Kasir → use cases -->
+        <line x1="78" y1="310" x2="230" y2="170" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="78" y1="310" x2="230" y2="240" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="78" y1="310" x2="230" y2="310" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="78" y1="310" x2="230" y2="380" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="78" y1="310" x2="230" y2="450" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+        <!-- Lines Pelanggan → use cases -->
+        <line x1="842" y1="240" x2="680" y2="170" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="842" y1="240" x2="680" y2="240" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="842" y1="240" x2="680" y2="380" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="842" y1="240" x2="680" y2="520" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ G. FAQS ══ -->
+<div class="section-wrap">
+<div class="section" id="faqs">
+  <div class="sec-label"><span class="sec-label-num">G</span><span class="sec-label-tag" style="color:var(--orange)">FAQs</span></div>
+  <h2 class="sec-title reveal">Pertanyaan Umum E-POS Online</h2>
+  <p class="sec-sub reveal">Jawaban atas pertanyaan-pertanyaan yang sering muncul seputar penggunaan AuliaSoft E-POS.</p>
+
+  <div class="faq-list reveal">
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apa perbedaan A-POS, A-Warung, dan E-POS Online?<span class="faq-icon">+</span></button><div class="faq-a">A-POS dan A-Warung adalah paket entry level dengan harga Rp 50.000/bulan, cocok untuk toko kecil dan warung dengan kebutuhan dasar. E-POS Online adalah paket lebih lengkap dengan tiga tier (Basic Rp 149.999, Standard Rp 349.999, Premium Rp 749.999) yang mencakup fitur inventori lanjutan, akuntansi, multi-outlet, payroll, dan integrasi marketplace.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apakah E-POS bisa digunakan tanpa internet (offline)?<span class="faq-icon">+</span></button><div class="faq-a">AuliaSoft E-POS adalah aplikasi berbasis cloud (online). Untuk operasional optimal, koneksi internet diperlukan. Namun sistem dirancang ringan dan responsif bahkan pada koneksi internet yang terbatas. Untuk kebutuhan offline penuh, silakan konsultasikan dengan tim AuliaSoft via WhatsApp 081241945881.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Bagaimana cara berlangganan dan mengaktifkan akun?<span class="faq-icon">+</span></button><div class="faq-a">1) Pilih paket yang sesuai. 2) Transfer pembayaran ke rekening BRI 7890 0100 5408 534 a/n PT Mitra Aulia Indonesia, atau bayar via QRIS. 3) Konfirmasi pembayaran via WhatsApp ke 081241945881 dengan menyertakan bukti transfer dan nama toko. 4) Akun akan diaktifkan dalam 1×24 jam kerja.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Device apa saja yang bisa digunakan untuk E-POS?<span class="faq-icon">+</span></button><div class="faq-a">E-POS Online bisa diakses dari berbagai perangkat: laptop/PC (browser), tablet Android/iPad, smartphone Android dan iPhone. Tampilan menyesuaikan ukuran layar secara otomatis (responsive). Untuk kasir, bisa dihubungkan dengan printer thermal Bluetooth/USB dan scanner barcode 1D/2D.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apakah data toko aman di AuliaSoft?<span class="faq-icon">+</span></button><div class="faq-a">Ya. Semua data dienkripsi dengan standar AES-256 dan disimpan di server cloud yang aman dengan backup otomatis harian. Data bisnis tidak dijual ke pihak ketiga. Pengguna dapat merequest penghapusan data kapan saja. Sistem memiliki uptime 99%.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apakah E-POS mendukung multi-cabang?<span class="faq-icon">+</span></button><div class="faq-a">Ya, fitur multi-outlet tersedia mulai dari paket Standard dan Premium. Anda dapat memantau stok, penjualan, dan karyawan dari beberapa cabang sekaligus melalui satu dashboard terpusat. Paket Premium mendukung hingga banyak outlet dengan fitur transfer stok antar outlet.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apakah bisa melakukan stok opname di E-POS?<span class="faq-icon">+</span></button><div class="faq-a">Ya. Fitur Stok Opname tersedia di AuliaSoft E-POS. Anda bisa melakukan penghitungan fisik stok, membandingkannya dengan stok di sistem, mencatat selisih, dan melakukan koreksi stok. Proses ini membantu audit internal dan memastikan akurasi data persediaan.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apa metode pembayaran yang didukung E-POS?<span class="faq-icon">+</span></button><div class="faq-a">E-POS mendukung: pembayaran tunai, QRIS (GoPay, OVO, Dana, ShopeePay, dll), transfer bank, kartu debit/kredit (via EDC), dan penjualan tempo/piutang. Paket Standard dan Premium mendukung QRIS Dynamic dan struk digital via WhatsApp, SMS, atau Email.</div></div>
+
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Bagaimana cara mendapatkan dukungan teknis?<span class="faq-icon">+</span></button><div class="faq-a">Tim support AuliaSoft dapat dihubungi via WhatsApp 081241945881. Respons pertama dalam 30 menit di jam kerja. Masalah teknis diselesaikan dalam 1×24 jam. Tersedia juga panduan video dan dokumentasi online di website auliasoft.com.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ H. ROADMAP ══ -->
+<div class="section-wrap">
+<div class="section" id="roadmap">
+  <div class="sec-label"><span class="sec-label-num">H</span><span class="sec-label-tag" style="color:var(--accent)">Product Roadmap</span></div>
+  <h2 class="sec-title reveal">Roadmap Pengembangan E-POS</h2>
+  <p class="sec-sub reveal">Level pengembangan fitur E-POS dari paket Basic, Standard, hingga Premium, beserta rencana inovasi ke depan.</p>
+
+  <div class="rm-timeline reveal">
+    <div class="rm-item">
+      <div class="rm-dot done">✓</div>
+      <div class="rm-content">
+        <span class="rm-badge done">Tersedia — Paket Basic (Rp 149.999/bln)</span>
+        <div class="rm-title">E-POS Basic — Fondasi Kasir Digital</div>
+        <div class="rm-desc">Paket dasar yang sudah mencakup semua kebutuhan operasional harian toko retail singel outlet.</div>
+        <div class="rm-features">
+          <span class="rm-feat">Singel outlet & toko online</span>
+          <span class="rm-feat">Aplikasi kasir online dasar</span>
+          <span class="rm-feat">Manajemen inventori</span>
+          <span class="rm-feat">CRM & data pelanggan</span>
+          <span class="rm-feat">Laporan penjualan lengkap</span>
+          <span class="rm-feat">Manajemen karyawan</span>
+          <span class="rm-feat">Invoice, SO, DO</span>
+          <span class="rm-feat">Digital payment QRIS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rm-item">
+      <div class="rm-dot done">✓</div>
+      <div class="rm-content">
+        <span class="rm-badge done">Tersedia — Paket Standard (Rp 349.999/bln)</span>
+        <div class="rm-title">E-POS Standard — Ekspansi Multi Outlet</div>
+        <div class="rm-desc">Semua fitur Basic ditambah kemampuan multi-outlet, akuntansi lengkap, QRIS Dynamic, dan aplikasi owner mobile.</div>
+        <div class="rm-features">
+          <span class="rm-feat">Multi-outlet</span>
+          <span class="rm-feat">Kasir: atur meja & multisatuan</span>
+          <span class="rm-feat">Inventori: COGS, produksi stok, transfer antar outlet</span>
+          <span class="rm-feat">Deposit pelanggan</span>
+          <span class="rm-feat">Akuntansi lengkap (CoA, auto posting)</span>
+          <span class="rm-feat">Laporan akuntansi & analisa bisnis</span>
+          <span class="rm-feat">Karyawan: absensi foto & otorisasi advance</span>
+          <span class="rm-feat">QRIS Dynamic + EDC + struk digital WA/SMS/Email</span>
+          <span class="rm-feat">Aplikasi Owner</span>
+          <span class="rm-feat">Order Online</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rm-item">
+      <div class="rm-dot done">✓</div>
+      <div class="rm-content">
+        <span class="rm-badge done">Tersedia — Paket Premium (Rp 749.999/bln)</span>
+        <div class="rm-title">E-POS Premium — Otomasi Penuh & Omnichannel</div>
+        <div class="rm-desc">Solusi terlengkap dengan integrasi marketplace, payroll penuh, serial/batch number, dan fitur Aulia Teams untuk manajemen tim.</div>
+        <div class="rm-features">
+          <span class="rm-feat">Toko online: Shopee, Tokopedia, GrabMart</span>
+          <span class="rm-feat">Kasir: serial number, batch, grosir, reservasi</span>
+          <span class="rm-feat">Inventori: serial/batch, permintaan barang</span>
+          <span class="rm-feat">Payroll: shift, penggajian, transfer gaji, e-payslip</span>
+          <span class="rm-feat">QRIS Dynamic + EDC debit/kredit</span>
+          <span class="rm-feat">Order online: GrabFood, GoFood, QR e-menu</span>
+          <span class="rm-feat">Aulia Teams: geolokasi absensi, broadcast</span>
+          <span class="rm-feat">Website, Webtree, Weborder, domain premium</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rm-item">
+      <div class="rm-dot now">▶</div>
+      <div class="rm-content">
+        <span class="rm-badge now">Sedang Dikembangkan — 2026</span>
+        <div class="rm-title">Integrasi Marketplace & Dashboard Terpusat</div>
+        <div class="rm-desc">Sinkronisasi stok otomatis dengan marketplace (Tokopedia, Shopee, Lazada) dan dashboard multi-cabang yang lebih canggih.</div>
+        <div class="rm-features">
+          <span class="rm-feat">Sinkronisasi stok otomatis marketplace</span>
+          <span class="rm-feat">Dashboard multi-cabang terpusat</span>
+          <span class="rm-feat">Omnichannel order management</span>
+          <span class="rm-feat">Integrasi mutasi rekening bank otomatis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rm-item" style="padding-bottom:0;">
+      <div class="rm-dot next">○</div>
+      <div class="rm-content">
+        <span class="rm-badge next">Akan Datang — Q4 2026</span>
+        <div class="rm-title">AI Analitik & Prediksi Stok</div>
+        <div class="rm-desc">Fitur kecerdasan buatan untuk prediksi kebutuhan stok, rekomendasi produk, dan analisa tren penjualan otomatis.</div>
+        <div class="rm-features">
+          <span class="rm-feat">Prediksi stok otomatis berbasis AI</span>
+          <span class="rm-feat">Rekomendasi produk terlaris</span>
+          <span class="rm-feat">Analisa tren penjualan</span>
+          <span class="rm-feat">Dashboard analitik lanjutan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ I. CUSTOMIZATION ══ -->
+<div class="section-wrap">
+<div class="section" id="customization">
+  <div class="sec-label"><span class="sec-label-num">I</span><span class="sec-label-tag" style="color:var(--accent5)">Customization</span></div>
+  <h2 class="sec-title reveal">Layanan Kustomisasi E-POS</h2>
+  <p class="sec-sub reveal">AuliaSoft menawarkan layanan penyesuaian fitur untuk kebutuhan bisnis spesifik klien — di luar paket standar yang tersedia.</p>
+
+  <div class="custom-grid reveal">
+    <div class="custom-card">
+      <span class="custom-icon">🏗️</span>
+      <div class="custom-title">Kustomisasi Modul Khusus</div>
+      <div class="custom-desc">Pengembangan modul tambahan yang disesuaikan dengan alur bisnis spesifik klien — misalnya modul untuk industri tertentu, alur produksi, atau integrasi sistem internal.</div>
+      <ul class="custom-list">
+        <li>Modul pencatatan khusus sesuai SOP klien</li>
+        <li>Alur persetujuan (approval workflow) kustom</li>
+        <li>Field tambahan pada form transaksi</li>
+        <li>Laporan kustom sesuai kebutuhan manajemen</li>
+      </ul>
+    </div>
+    <div class="custom-card">
+      <span class="custom-icon">🔗</span>
+      <div class="custom-title">Integrasi Sistem Eksternal</div>
+      <div class="custom-desc">Integrasi AuliaSoft E-POS dengan sistem yang sudah ada di perusahaan klien, termasuk ERP, sistem akuntansi, atau platform e-commerce kustom.</div>
+      <ul class="custom-list">
+        <li>Integrasi dengan sistem ERP perusahaan</li>
+        <li>API connection dengan marketplace lokal</li>
+        <li>Integrasi sistem rekening bank otomatis</li>
+        <li>Webhook & notifikasi ke sistem pihak ketiga</li>
+      </ul>
+    </div>
+    <div class="custom-card">
+      <span class="custom-icon">🎨</span>
+      <div class="custom-title">White Label & Branding</div>
+      <div class="custom-desc">Penyesuaian tampilan aplikasi dengan logo dan identitas visual klien. Tersedia untuk institusi atau bisnis yang ingin menggunakan platform AuliaSoft dengan merek sendiri.</div>
+      <ul class="custom-list">
+        <li>Kustomisasi logo dan warna brand</li>
+        <li>Domain/subdomain khusus klien</li>
+        <li>Tampilan struk dengan logo toko</li>
+        <li>Template laporan kustom berbranding</li>
+      </ul>
+    </div>
+    <div class="custom-card">
+      <span class="custom-icon">🏛️</span>
+      <div class="custom-title">Solusi Khusus Lembaga</div>
+      <div class="custom-desc">AuliaSoft menyediakan solusi yang lebih luas dari sekadar kasir — termasuk aplikasi khusus untuk Koperasi, BUMDes, Mini Bank, LKM/LKMS, LAZIS, dan Kopdes KDMP.</div>
+      <ul class="custom-list">
+        <li>Aplikasi Koperasi KSP (mulai Rp 1.500.000)</li>
+        <li>Aplikasi BUMDes dan Mini Bank</li>
+        <li>Aplikasi LAZIS (pengelolaan zakat)</li>
+        <li>Aplikasi Kopdes KDMP (Koperasi Desa)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="custom-cta reveal">
+    <div class="custom-cta-text">
+      <h4>Butuh fitur khusus untuk bisnis Anda?</h4>
+      <p>Konsultasikan kebutuhan kustomisasi dengan tim AuliaSoft. Hubungi via WhatsApp untuk diskusi lebih lanjut.</p>
+    </div>
+    <a class="wa-btn" href="https://wa.me/6281241945881" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Konsultasi Kustomisasi
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- ══ J. COMPETITORS ══ -->
+<div class="section-wrap">
+<div class="section" id="competitors">
+  <div class="sec-label"><span class="sec-label-num">J</span><span class="sec-label-tag" style="color:var(--red)">Kompetitor</span></div>
+  <h2 class="sec-title reveal">Perbandingan dengan Kompetitor</h2>
+  <p class="sec-sub reveal">Berikut perbandingan objektif AuliaSoft E-POS dengan aplikasi kasir lain yang tersedia di pasar Indonesia.</p>
+
+  <div class="comp-table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Fitur / Aspek</th>
+          <th class="us-head">✦ AuliaSoft E-POS</th>
+          <th>Moka POS</th>
+          <th>Pawoon</th>
+          <th>Kasir Pintar</th>
+          <th>iREAP POS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Harga Entry Level</td>
+          <td class="us-col">Rp 50.000/bln (A-POS)</td>
+          <td>~Rp 149.000/bln</td>
+          <td>Rp 149.000/bln</td>
+          <td>Gratis (terbatas)</td>
+          <td>Gratis (terbatas)</td>
+        </tr>
+        <tr>
+          <td>Modul Servis/Bengkel</td>
+          <td class="us-col"><span class="chk-yes">✓ Ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+        </tr>
+        <tr>
+          <td>Akuntansi Lengkap (CoA)</td>
+          <td class="us-col"><span class="chk-yes">✓ Ada (Standard+)</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-partial">~ Terbatas</span></td>
+        </tr>
+        <tr>
+          <td>Payroll & Absensi Foto</td>
+          <td class="us-col"><span class="chk-yes">✓ Ada (Premium)</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+        </tr>
+        <tr>
+          <td>Integrasi Marketplace</td>
+          <td class="us-col"><span class="chk-yes">✓ Shopee, Tokopedia (Premium)</span></td>
+          <td><span class="chk-partial">~ Terbatas</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+        </tr>
+        <tr>
+          <td>Aplikasi Koperasi/BUMDes</td>
+          <td class="us-col"><span class="chk-yes">✓ Ada (eksklusif)</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+        </tr>
+        <tr>
+          <td>Notifikasi WhatsApp Otomatis</td>
+          <td class="us-col"><span class="chk-yes">✓ Ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-partial">~ Terbatas</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+          <td><span class="chk-no">✗ Tidak ada</span></td>
+        </tr>
+        <tr>
+          <td>Dukungan Bahasa Indonesia</td>
+          <td class="us-col"><span class="chk-yes">✓ Penuh (Lokal)</span></td>
+          <td><span class="chk-yes">✓ Ada</span></td>
+          <td><span class="chk-yes">✓ Ada</span></td>
+          <td><span class="chk-yes">✓ Ada</span></td>
+          <td><span class="chk-yes">✓ Ada</span></td>
+        </tr>
+        <tr>
+          <td>Support Respons Cepat</td>
+          <td class="us-col"><span class="chk-yes">✓ 30 menit (WA)</span></td>
+          <td><span class="chk-partial">~ Email/ticket</span></td>
+          <td><span class="chk-partial">~ Email/ticket</span></td>
+          <td><span class="chk-partial">~ Email/ticket</span></td>
+          <td><span class="chk-partial">~ Forum</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="comp-advantage reveal">
+    <div class="comp-adv-card">
+      <span class="comp-adv-icon">🏆</span>
+      <div class="comp-adv-title">All-in-One Lokal</div>
+      <div class="comp-adv-desc">Satu platform untuk kasir, servis, koperasi, BUMDes — tidak perlu aplikasi berbeda</div>
+    </div>
+    <div class="comp-adv-card">
+      <span class="comp-adv-icon">💰</span>
+      <div class="comp-adv-title">Harga Terjangkau</div>
+      <div class="comp-adv-desc">Entry level Rp 50.000/bln — paling kompetitif dengan fitur paling lengkap di kelasnya</div>
+    </div>
+    <div class="comp-adv-card">
+      <span class="comp-adv-icon">⚡</span>
+      <div class="comp-adv-title">Support Cepat</div>
+      <div class="comp-adv-desc">Respons WhatsApp dalam 30 menit — lebih cepat dari sistem tiket kompetitor</div>
+    </div>
+    <div class="comp-adv-card">
+      <span class="comp-adv-icon">🏛️</span>
+      <div class="comp-adv-title">Ekosistem Lengkap</div>
+      <div class="comp-adv-desc">Satu-satunya yang punya solusi untuk Kopdes, Mini Bank, LAZIS, dan BUMDes</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ K. COMPLEMENTARY ══ -->
+<div class="section-wrap">
+<div class="section" id="complementary">
+  <div class="sec-label"><span class="sec-label-num">K</span><span class="sec-label-tag" style="color:var(--gold)">Complementary Products</span></div>
+  <h2 class="sec-title reveal">Produk & Hardware Pendukung</h2>
+  <p class="sec-sub reveal">AuliaSoft E-POS bekerja optimal ketika dikombinasikan dengan hardware dan layanan berikut. Hardware tersedia di <a href="https://www.auliasoft.com/kategori-produk/hardware" target="_blank" style="color:var(--accent)">auliasoft.com/kategori-produk/hardware</a></p>
+
+  <div class="comp-grid reveal">
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(74,222,128,.1);">🖨️</div>
+      <div class="comp-title">Printer Thermal Struk</div>
+      <div class="comp-desc">Printer struk 58mm atau 80mm kompatibel via Bluetooth & USB. Cetak struk transaksi otomatis dari E-POS.</div>
+      <div class="comp-price">Cek di auliasoft.com/hardware</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(34,211,238,.1);">📷</div>
+      <div class="comp-title">Scanner Barcode</div>
+      <div class="comp-desc">Scanner 1D/2D wired atau wireless plug-and-play. Percepat input produk dan proses kasir hingga 3x lebih cepat.</div>
+      <div class="comp-price">Cek di auliasoft.com/hardware</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(245,158,11,.1);">💳</div>
+      <div class="comp-title">Mesin EDC & QRIS</div>
+      <div class="comp-desc">Terminal EDC untuk pembayaran kartu debit/kredit dan QRIS statis/dinamis dari berbagai dompet digital.</div>
+      <div class="comp-price">Cek di auliasoft.com/hardware</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(167,139,250,.1);">📦</div>
+      <div class="comp-title">Timbangan Digital</div>
+      <div class="comp-desc">Timbangan digital yang dapat terhubung ke E-POS untuk produk yang dijual per berat (gram/kg).</div>
+      <div class="comp-price">Cek di auliasoft.com/hardware</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(248,113,113,.1);">🖥️</div>
+      <div class="comp-title">Tablet / Display Kasir</div>
+      <div class="comp-desc">Tablet Android 7-10 inci sebagai layar kasir utama. Bisa ditambah customer display untuk transparansi harga.</div>
+      <div class="comp-price">Cek di auliasoft.com/hardware</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(74,222,128,.1);">🛒</div>
+      <div class="comp-title">Tokopedia & Shopee</div>
+      <div class="comp-desc">Sinkronisasi stok dan pesanan marketplace secara otomatis — tersedia di paket Premium E-POS.</div>
+      <div class="comp-price">Tersedia di Premium</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(34,211,238,.1);">💬</div>
+      <div class="comp-title">WhatsApp Business</div>
+      <div class="comp-desc">Integrasi notifikasi servis, tagihan piutang, konfirmasi pesanan, dan promosi ke pelanggan langsung via WA.</div>
+      <div class="comp-price">Terintegrasi otomatis</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-img" style="background:rgba(245,158,11,.1);">📊</div>
+      <div class="comp-title">Excel & Google Sheets</div>
+      <div class="comp-desc">Export laporan E-POS langsung ke format Excel (.xlsx) atau Google Sheets untuk analisa lebih lanjut.</div>
+      <div class="comp-price">Fitur export bawaan</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ L. PROCESSES & POLICIES ══ -->
+<div class="section-wrap">
+<div class="section" id="policies">
+  <div class="sec-label"><span class="sec-label-num">L</span><span class="sec-label-tag" style="color:var(--accent2)">Proses & Kebijakan</span></div>
+  <h2 class="sec-title reveal">Proses & Kebijakan AuliaSoft E-POS</h2>
+  <p class="sec-sub reveal">Transparansi penuh — inilah cara kerja, proses order, kebijakan testing, dan standar layanan AuliaSoft.</p>
+
+  <div class="proc-grid reveal">
+    <div class="proc-card" style="border-color:rgba(74,222,128,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(74,222,128,.1);">🧪</div>
+        <div class="proc-title">Proses Testing Aplikasi</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Pengguna baru mendapat akses demo/trial untuk mencoba fitur E-POS sebelum berlangganan</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Testing fitur kasir, input stok, dan laporan dapat dilakukan pada mode demonstrasi</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Tim AuliaSoft mendampingi proses onboarding dan testing via WhatsApp 081241945881</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Setelah puas, lanjutkan ke proses berlangganan resmi</div>
+      </div>
+    </div>
+
+    <div class="proc-card" style="border-color:rgba(34,211,238,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(34,211,238,.1);">📝</div>
+        <div class="proc-title">Proses Order & Aktivasi</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Pilih paket E-POS: Basic (Rp 149.999), Standard (Rp 349.999), atau Premium (Rp 749.999) per bulan</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Transfer ke BRI <strong style="color:var(--text);font-family:var(--font-mono);">7890 0100 5408 534</strong> a/n PT Mitra Aulia Indonesia, atau bayar via QRIS</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Kirim bukti transfer + nama toko via WhatsApp ke 081241945881</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Akun aktif dalam 1×24 jam kerja. Tim akan menghubungi untuk onboarding awal</div>
+      </div>
+    </div>
+
+    <div class="proc-card" style="border-color:rgba(167,139,250,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(167,139,250,.1);">🔒</div>
+        <div class="proc-title">Kebijakan Privasi Data</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Data bisnis pengguna tidak pernah dijual atau dibagikan ke pihak ketiga manapun</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Semua data dienkripsi dengan standar AES-256 saat penyimpanan dan transmisi</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Backup otomatis dilakukan setiap hari ke server cloud yang aman</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Pengguna dapat merequest penghapusan data kapan saja dengan menghubungi tim support</div>
+      </div>
+    </div>
+
+    <div class="proc-card" style="border-color:rgba(245,158,11,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(245,158,11,.1);">🎧</div>
+        <div class="proc-title">Kebijakan Dukungan Pelanggan</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Hubungi tim support via WhatsApp 081241945881 (jam kerja Senin-Sabtu)</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Respons pertama dalam 30 menit di jam kerja untuk laporan gangguan teknis</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Penyelesaian masalah teknis dalam 1×24 jam sejak laporan diterima</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Tersedia panduan video dan dokumentasi online di auliasoft.com/berita</div>
+      </div>
+    </div>
+
+    <div class="proc-card" style="border-color:rgba(248,113,113,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(248,113,113,.1);">🔄</div>
+        <div class="proc-title">Kebijakan Perpanjangan & Batal</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Berlangganan bersifat bulanan — perpanjangan dilakukan setiap bulan</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Notifikasi perpanjangan dikirim via WhatsApp sebelum masa berlaku habis</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Pengguna dapat menghentikan berlangganan kapan saja dengan menghubungi tim</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Data tetap dapat diakses selama berlangganan aktif; backup tersedia untuk download</div>
+      </div>
+    </div>
+
+    <div class="proc-card" style="border-color:rgba(96,165,250,.2);">
+      <div class="proc-head">
+        <div class="proc-icon-d" style="background:rgba(96,165,250,.1);">⚖️</div>
+        <div class="proc-title">Kebijakan Penggunaan & SLA</div>
+      </div>
+      <div class="proc-steps">
+        <div class="proc-step-d"><div class="proc-step-num">1</div>Sistem dijamin memiliki uptime 99% — maintenance diumumkan minimal H-1</div>
+        <div class="proc-step-d"><div class="proc-step-num">2</div>Akun tidak boleh digunakan untuk aktivitas ilegal atau melanggar hukum Indonesia</div>
+        <div class="proc-step-d"><div class="proc-step-num">3</div>Setiap akun berlangganan hanya untuk satu badan usaha/toko (satu NPWP/NIB)</div>
+        <div class="proc-step-d"><div class="proc-step-num">4</div>Pelanggaran SLA memberikan hak klaim kompensasi perpanjangan layanan gratis</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2 class="cta-title">Siap Mulai dengan <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AuliaSoft E-POS</span>?</h2>
+  <p class="cta-sub">Bergabung bersama ribuan UMKM yang sudah menggunakan AuliaSoft.<br>Mulai dari Rp 50.000/bulan — tanpa biaya tersembunyi.</p>
+  <div class="cta-btns">
+    <a class="btn-primary" href="https://www.auliasoft.com" target="_blank">🚀 Lihat Produk Lengkap</a>
+    <a class="btn-secondary" href="https://wa.me/6281241945881" target="_blank">💬 Tanya via WhatsApp</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 AuliaSoft — PT Mitra Aulia Indonesia · www.auliasoft.com · WA: 081241945881 · NIM: 310123012769</div>
+  <div style="font-size:11px;color:var(--text3);">Product Knowledge Explorer — 12 Dimensi E-POS</div>
+</footer>
+
+<!-- FLOAT BUTTONS -->
+<div style="position:fixed;bottom:24px;right:24px;z-index:998;display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
+  <a href="https://wa.me/6281241945881" target="_blank" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#25D366,#16a34a);display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:all .2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+// FAQ toggle
+function toggleFaq(btn){const item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');}
+
+// Nav active
+function setActive(el){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+
+// Reveal on scroll
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Active section tracking
+const sections=document.querySelectorAll('[id]');
+const navTabs=document.querySelectorAll('.nav-tab');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)current=s.id;});
+  navTabs.forEach(t=>{t.classList.toggle('active',t.getAttribute('href')==='#'+current);});
+},{passive:true});
+</script>
+</body>
+</html>
